@@ -1,0 +1,103 @@
+-- Exercise 1
+CREATE TABLE clienbotiga (
+    idclient numeric(5),
+    nom varchar(10) not null,
+    cognoms varchar(50),
+    adreca varchar(50),
+    cp varchar(5),
+
+constraint pk_idclient primary key(idclient),
+constraint ck_nom check (nom = initcap(nom)),
+constraint ck_cognoms check (cognoms = initcap(cognoms))
+);
+select * from clienbotiga;
+
+CREATE TABLE productebotiga (
+    idprod varchar(5),
+    nomprod varchar(20),
+    preu numeric(5,2),
+    concepte varchar(15) not null,
+
+constraint pk_idprod primary key(idprod),
+constraint ck_nomprod check (nomprod = upper(nomprod)),
+constraint ck_preu check (preu > 0),
+constraint ck_concepte check (concepte = initcap(concepte))
+);
+select * from productebotiga;
+
+CREATE TABLE comandabotiga (
+    idcomanda numeric(8),
+    idprod varchar(5),
+    idclient numeric(5),
+    quantitat numeric(3),
+    datacomanda date,
+
+constraint pk_idcomanda primary key(idcomanda),
+constraint fk_idprod foreign key(idprod) references productebotiga,
+constraint fk_idclient foreign key(idclient) references clienbotiga,
+constraint ck_datacomanda check (datacomanda = current_date)
+);
+select * from comandabotiga;
+
+-- Exercise 2
+    -- ClientBotiga
+ALTER TABLE clienbotiga ALTER COLUMN cognoms SET NOT NULL;
+ALTER TABLE clienbotiga ALTER COLUMN cp SET NOT NULL;
+    -- ComandaBotiga
+ALTER TABLE comandabotiga ADD CONSTRAINT ck_quantitat check (quantitat > 0);
+ALTER TABLE comandabotiga ALTER COLUMN quantitat SET NOT NULL;
+
+-- Modificar constraint Precio
+ALTER TABLE productebotiga DROP CONSTRAINT ck_preu;
+ALTER TABLE productebotiga ADD CONSTRAINT ck_preu check (preu >= 0);
+
+-- Exercise 3
+
+ALTER TABLE clienbotiga ALTER COLUMN nom TYPE VARCHAR(15);
+
+INSERT INTO clienbotiga VALUES (1, 'Luis Miguel', 'Barroso Ora', 'Guzmán el Bueno, 90', 08080),
+                               (2, 'Beatriz', 'Muñoz Muñoz', 'Zurriaga, 25', 08940),
+                               (3, 'Jonás', 'Arin Ruiz', 'Federico Puertas, 3', 32142),
+                               (4, 'Joaquín', 'Cañas Cañas', 'Vinateros, 121', 11223),
+                               (5, 'Pedro', 'Sol Luna', 'Virgen del Cerro, 154', 08940),
+                               (6, 'Sandra', 'Marin Martin', 'Pablo Neruda, 15', 45324),
+                               (7, 'Miguel', 'Orozco Leon', 'Armadores, 1', 08080),
+                               (8, 'Sergio', 'Lopez', 'Avenida del Ejercito, 76', 45324),
+                               (9, 'Alejandro', 'Ruiz', 'Leonor de Cortinas, 7', 32142),
+                               (10, 'Alvaro', 'Gomez', 'Fuencarral, 33', 08080),
+                               (11, 'Rocío', 'Gomez Gomez', 'Cervantes, 22', 32142);
+
+select * from clienbotiga;
+
+INSERT INTO productebotiga VALUES (1, 'PATATAS', 2, 'Kilo'),
+                                  (2, 'MELONES', 3, 'Kilo'),
+                                  (3, 'SANDIAS', 1, 'Kilo'),
+                                  (4, 'ZAPATOS', 20, 'Par'),
+                                  (5, 'CHANDAL', 30, 'Unidad'),
+                                  (6, 'PANTALONES', 25, 'Unidad');
+
+select * from productebotiga;
+
+INSERT INTO comandabotiga VALUES (1, 1, 1, 5, current_date),
+                                 (2, 9, 2, 10, current_date),
+                                 (3, 4, 5, 6, current_date),
+                                 (4, 12, 8, 1, current_date),
+                                 (5, 7, 2, 9, current_date),
+                                 (6, 8, 3, 7, current_date),
+                                 (7, 7, 9, 3, current_date),
+                                 (8, 2, 7, 1, current_date);
+
+select * from comandabotiga;
+
+-- Exercise 4
+
+INSERT INTO clienbotiga VALUES (12, 'Joaquín', 'Maria Leon', 'Buena Aires, 31', 08940),
+                               (13, 'Jesús', 'Ley Esteban', 'Gaztambique, 32', 45324);
+
+select * from  clienbotiga;
+
+INSERT INTO productebotiga VALUES (7, 'CAMISA', 22, 'Unidad'),
+                                  (8, 'CORBATA', 12, 'Unidad'),
+                                  (9, 'ACEITE', 4, 'Litro');
+
+select * from  productebotiga;
