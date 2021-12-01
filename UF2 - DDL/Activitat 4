@@ -1,3 +1,13 @@
+/*
+  APUNTES:
+  - Los CodigosPostales tienen que ser de tipo varchar.
+  - La current_date, se pone por defecto en la creacion de la tabla, asi no hace falta que se le indique cuando se
+    tengan que introducir los valores.
+  - Para borrar un campo, que contenga una foreign key, de otra tabla, hay que modificar la constraint para tener
+    la posibilidad de borrar los datos de manera recursiva (on delete cascade)
+
+*/
+
 -- Exercise 1
 CREATE TABLE clienbotiga (
     idclient numeric(5),
@@ -39,7 +49,7 @@ constraint ck_datacomanda check (datacomanda = current_date)
 );
 select * from comandabotiga;
 
--- Exercise 2
+-- Exercise 1
     -- ClientBotiga
 ALTER TABLE clienbotiga ALTER COLUMN cognoms SET NOT NULL;
 ALTER TABLE clienbotiga ALTER COLUMN cp SET NOT NULL;
@@ -51,7 +61,7 @@ ALTER TABLE comandabotiga ALTER COLUMN quantitat SET NOT NULL;
 ALTER TABLE productebotiga DROP CONSTRAINT ck_preu;
 ALTER TABLE productebotiga ADD CONSTRAINT ck_preu check (preu >= 0);
 
--- Exercise 3
+-- Exercise 2
 
 ALTER TABLE clienbotiga ALTER COLUMN nom TYPE VARCHAR(15);
 
@@ -89,7 +99,7 @@ INSERT INTO comandabotiga VALUES (1, 1, 1, 5, current_date),
 
 select * from comandabotiga;
 
--- Exercise 4
+-- Exercise 3
 
 INSERT INTO clienbotiga VALUES (12, 'Joaquín', 'Maria Leon', 'Buena Aires, 31', 08940),
                                (13, 'Jesús', 'Ley Esteban', 'Gaztambique, 32', 45324);
@@ -101,3 +111,35 @@ INSERT INTO productebotiga VALUES (7, 'CAMISA', 22, 'Unidad'),
                                   (9, 'ACEITE', 4, 'Litro');
 
 select * from  productebotiga;
+
+INSERT INTO comandabotiga VALUES (9, 6, 4, 3, current_date);
+INSERT INTO comandabotiga VALUES (10, 3, 1, 4, current_date);
+INSERT INTO comandabotiga VALUES (11, 14, 1, 4, current_date);
+INSERT INTO comandabotiga VALUES (12, 9, 10, 77, current_date);
+INSERT INTO comandabotiga VALUES (13, 10, 2, -3, current_date);
+INSERT INTO comandabotiga VALUES (14, 10, 1, 3, current_date);
+INSERT INTO comandabotiga VALUES (15, 10, 1, 3, current_date);
+
+select * from  comandabotiga;
+
+-- Exercise 4
+
+select * from productebotiga;
+ALTER TABLE productebotiga ADD COLUMN preuiva varchar(20);
+select * from productebotiga;
+
+-- Exercise 5
+
+select * from clienbotiga;
+ALTER TABLE clienbotiga ADD COLUMN telefon varchar(12);
+select * from clienbotiga;
+
+-- Exercise 6
+
+-- ALTER TABLE productebotiga
+-- ALTER COLUMN preuiva TYPE NUMERIC(3,2) using preuiva::numeric;
+
+-- Exercise 7
+
+-- ALTER TABLE productebotiga
+-- UPDATE productebotiga SET preuiva=preu*1.18;
