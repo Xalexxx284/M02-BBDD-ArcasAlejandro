@@ -1,0 +1,27 @@
+-- ACTIVITAT 1 - CONSULTES SENZILLES - RESIDUS
+
+/* Ej1 - Mostra el NIF i data d'enviament d'aquelles empreses que el cost
+   d'un transport ha estat entre 35000 i 36500 euros */
+
+SELECT nif_empresa, data_enviament FROM trasllat_empresatransport
+WHERE cost BETWEEN 35000 AND 36500;
+
+/* Ej2 -Mostra el NIF de l’empresa i el seu codi de destí, d’aquelles
+   empreses que van realitzar algun trasllat durant el primer trimestre de 2017 */
+
+-- select nif_empresa, cod_desti from trasllat_empresatransport
+-- where to_char(data_enviament, 'MON') in ('JAN', 'FAB', 'MAR') and
+--       to_char(data_enviament, 'YYYY') = '2017';
+
+/* Ej3 - Quins tractaments es poden dur a terme als diferents residus? */
+
+SELECT DISTINCT tractament FROM trasllat;
+
+/* Ej4 - Quines són les diferents ciutats on estan ubicades les empreses transportistes? */
+
+SELECT DISTINCT ciutat_emptransport FROM empresatransportista;
+
+/* Ej5 -  Indica el NIF de l’empresa, el codi de residu i el tractament d’aquelles
+   empreses que han fet servir un tipus d’envàs que comença per ‘b’.*/
+
+SELECT nif_empresa, cod_residu, tractament from trasllat;
