@@ -9,9 +9,9 @@ WHERE cost BETWEEN 35000 AND 36500;
 /* Ej2 -Mostra el NIF de l’empresa i el seu codi de destí, d’aquelles
    empreses que van realitzar algun trasllat durant el primer trimestre de 2017 */
 
--- select nif_empresa, cod_desti from trasllat_empresatransport
--- where to_char(data_enviament, 'MON') in ('JAN', 'FAB', 'MAR') and
---       to_char(data_enviament, 'YYYY') = '2017';
+select nif_empresa, cod_desti from trasllat_empresatransport
+where to_char(data_enviament, 'MON') in ('JAN', 'FAB', 'MAR') and
+      to_char(data_enviament, 'YYYY') = '2017';
 
 /* Ej3 - Quins tractaments es poden dur a terme als diferents residus? */
 
@@ -25,3 +25,30 @@ SELECT DISTINCT ciutat_emptransport FROM empresatransportista;
    empreses que han fet servir un tipus d’envàs que comença per ‘b’.*/
 
 SELECT nif_empresa, cod_residu, tractament from trasllat;
+
+
+
+-- ..............................................
+
+-- ACTIVITAT 2 - FUNCIONS - RESIDUS
+
+/* Ej1 - Mostra el NIF_EMPRESA, el COD_RESIDU i el COST, multiplicat per 0.1478 i arrodonit a les desenes. */
+
+SELECT nif_empresa, cod_residu, round(cost*0.1478, 2) AS "cost arrodonit" FROM trasllat_empresatransport;
+
+/* Ej2 - Mostra el NIF de les empreses que van realitzar un enviament durant el mes de juliol de 2017 */
+/* Ej3 - Mostra el codi de destí, i la quantitat de residu que es van rebre durant el primer dia de cada mes, posterior a la data d'arribada, durant l'any 2016. (exemple, 05/06/17 serà 01/07/17). */
+/* Ej4 - Mostra el codi de residu dels residus que van ser enviats durant l'any 2017 */
+/* Ej5 - Mostra el NIF i Nom de l'empresa productora de totes les empreses productores. Els noms s'ha de mostrar amb la primera lletra en majúscules i la resta en minúscules */
+/* Ej6 - Mostra la primera paraula del Nom de l'empresa productora (pe INTERCONTINENTAL QUIMICA serà INTERCONTINENTAL). */
+/* Ej7 - Mostra la longitud del nom de l'empresa productora que al camp CIUTAT_EMPRESA contingui una 'I' després de la tercera posició */
+/* Ej8 - Mostra el tipus d'envàs en majúscules i el tractament en minúscules per als enviaments que han traslladat més de 100 tones i s'han realitzat durant el segon trimestre de 2016.  */
+/* Ej9 - Mostra els codi de residus que tenen data d'enviament durant l'any actual.  */
+/* Ej10 - Mostra el nombre de dies que han passat entre l'última data d'enviament d'un trasllat i la data actual.  */
+/* Ej11 - Mostra el nombre d'enviaments que han sigut realitzats (enviats) després del 20 de cada mes */
+/* Ej12 - Mostra el codi de residu i la quantitat, d'aquells residus que han sigut enviats durant el mes de abril.  */
+/* Ej13 - Quants tipus de tractaments diferents existeixen?  */
+/* Ej14 - Obté de la taula trasllats l'últim dia del mes per cadascuna de les dates d'arribada amb codi destí 22. */
+/* Ej15 - Obté el nom del destí de la taula Destí de la següent manera: “El nom del destí és: NOM_DESTÍ” i la seva ciutat: CIUTAT_DESTI'. Per poder realitzar aquesta tasca has de fer la funció CONCAT.  */
+/* Ej16 - A partir de la taula TRASLLAT_EMPRESATRANSPORT, obté la data_enviament formatada, de manera que aparegui el nom del més amb totes les seves lletres (month), el nombre de dia de mes (dd) i l'any (yyyy), per a aquells trasllat que s'hagin realitzat en tren. La columna que mostri la data s'anomenarà “Nova data”; */
+/* Ej17 - Mostra el dia de la setmana i la quantitat de residu transportat d'aquells enviaments que s'ha dur a terme durant el dimarts i que hagin transportat una quantitat superior a 100 tones. Mostra el resultat ordenat per la quantitat (de gran a petit). */
