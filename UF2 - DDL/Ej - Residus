@@ -1,3 +1,7 @@
+/* Correcio valor Madrid */
+
+UPDATE empresaproductora SET ciutat_empresa = 'MADRID' WHERE ciutat_empresa = 'MADIRD';
+
 -- ACTIVITAT 1 - CONSULTES SENZILLES - RESIDUS
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ----------------------------------- ACTIVITAT 1 - CONSULTES SENZILLES - RESIDUS ---------------------------------- */
@@ -113,7 +117,8 @@ WHERE to_char(data_enviament, 'MM') = '07'
 /* Ej3 - Mostra el codi de destí, i la quantitat de residu que es van rebre durant el primer dia de cada mes, posterior
    a la data d'arribada, durant l'any 2016. (exemple, 05/06/17 serà 01/07/17). */
 
-
+SELECT cod_desti, quantitat_residu FROM residu, trasllat
+WHERE to_char(data_arribada, 'DD:MM:YYYY') = '01:MM:2016' > data_arribada;
 
 /* Ej4 - Mostra el codi de residu dels residus que van ser enviats durant l'any 2017 */
 
@@ -127,7 +132,7 @@ SELECT nif_empresa, initcap(nom_empresa) AS nom_empresa FROM empresaproductora;
 
 /* Ej6 - Mostra la primera paraula del Nom de l'empresa productora (pe INTERCONTINENTAL QUIMICA serà INTERCONTINENTAL). */
 
-SELECT split_part(nom_empresa, ' ',1), nom_empresa FROM empresaproductora;
+SELECT split_part(nom_empresa, ' ',1) FROM empresaproductora;
 
 /* Ej7 - Mostra la longitud del nom de l'empresa productora que al camp CIUTAT_EMPRESA contingui una 'I' després de la
    tercera posició */
@@ -159,7 +164,7 @@ WHERE to_char(data_enviament, 'DD:MM:YYYY') > '20:MM:YYYY';
 
 /* Ej12 - Mostra el codi de residu i la quantitat, d'aquells residus que han sigut enviats durant el mes de abril.  */
 
-SELECT t.cod_residu, r.quantitat_residu FROM residu r, trasllat t
+SELECT r.cod_residu, r.quantitat_residu FROM residu r, trasllat t
 WHERE to_char(t.data_enviament, 'MM') = '04';
 
 /* Ej13 - Quants tipus de tractaments diferents existeixen?  */
