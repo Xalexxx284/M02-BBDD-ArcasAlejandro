@@ -1,15 +1,25 @@
+-- ACTIVITAT 1 - CONSULTES SENZILLES - RESIDUS
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ----------------------------------- ACTIVITAT 1 - CONSULTES SENZILLES - RESIDUS ---------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+/* Ej1 - Mostra el NIF i data d'enviament d'aquelles empreses que el cost
+   d'un transport ha estat entre 35000 i 36500 euros */
 /* Ej1 - Mostra el NIF i data d’enviament d’aquelles empreses que el cost d’un transport ha estat entre 35000 i 36500€ */
 
+SELECT nif_empresa, data_enviament FROM trasllat_empresatransport
+WHERE cost BETWEEN 35000 AND 36500;
 select nif_emptransportista, data_enviament from trasllat_empresatransport
 where cost between '35000' and '36500';
 
+/* Ej2 -Mostra el NIF de l’empresa i el seu codi de destí, d’aquelles
+   empreses que van realitzar algun trasllat durant el primer trimestre de 2017 */
 select nif_emptransportista, data_enviament from trasllat_empresatransport
 where cost>='35000' and cost <='36500';
 
+select nif_empresa, cod_desti from trasllat_empresatransport
+where to_char(data_enviament, 'MON') in ('JAN', 'FAB', 'MAR') and
+      to_char(data_enviament, 'YYYY') = '2017';
 /* Ej2 - Mostra el NIF de l’empresa i el seu codi de destí, d’aquelles empreses que van realitzar algun trasllat durant
    el primer trimestre de 2017. */
 
@@ -21,11 +31,13 @@ select nif_emptransportista, cod_desti, data_enviament from trasllat_empresatran
 
 /* Ej3 - Quins tractaments es poden dur a terme als diferents residus? */
 
+SELECT DISTINCT tractament FROM trasllat;
 select count(*) from trasllat;
 select distinct  tractament from trasllat;
 
 /* Ej4 - Quines són les diferents ciutats on estan ubicades les empreses transportistes? */
 
+SELECT DISTINCT ciutat_emptransport FROM empresatransportista;
 select distinct ciutat_emptransport from empresatransportista
 where empresatransportista.ciutat_emptransport not like '' order by 1;
 
@@ -61,9 +73,12 @@ select tipus_transport, nom_emptransport, cod_desti
             where upper(nom_empresa) like '_A%' or nom_empresa like '%s' and lower(ciutat_empresa) in ('málaga','sevilla','córdoba')
             order by 2 desc;
 
+/* Ej5 -  Indica el NIF de l’empresa, el codi de residu i el tractament d’aquelles
+   empreses que han fet servir un tipus d’envàs que comença per ‘b’.*/
 /* Ej8 - Mostra el NIF_EMPRESA i la Quantitat_Trasllat de les empreses que han fet servir un tipus de tractament de
    “Segregació i lliurament” i que la   seva data d’enviament s’ha produït durant el primer trimestre de 2016. */
 
+SELECT nif_empresa, cod_residu, tractament from trasllat;
   select nif_empresa, quantitat_trasllat, tractament, data_enviament
       from trasllat where tractament like '%egregació%' and to_char(data_enviament,'yyyy')='2016'
                       and to_char(data_enviament,'q')='1';
@@ -75,9 +90,11 @@ select tipus_transport, nom_emptransport, cod_desti
    que el càlcul del cost total és el resultat del multiplicar el cost*km i que hem de mostrar la informació en una
    columna que es dirà “Cost Total”. */
 
+-- ..............................................
   select (cost*kms) as "cost_total", tipus_transport
 from trasllat_empresatransport where lower(tipus_transport)='train' and cod_desti in ('12','13','14');
 
+-- ACTIVITAT 2 - FUNCIONS - RESIDUS
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ---------------------------------------- ACTIVITAT 2 - FUNCIONS - RESIDUS ---------------------------------------- */
@@ -95,6 +112,7 @@ WHERE to_char(data_enviament, 'MM') = '07'
 
 /* Ej3 - Mostra el codi de destí, i la quantitat de residu que es van rebre durant el primer dia de cada mes, posterior
    a la data d'arribada, durant l'any 2016. (exemple, 05/06/17 serà 01/07/17). */
+
 
 
 /* Ej4 - Mostra el codi de residu dels residus que van ser enviats durant l'any 2017 */
@@ -128,7 +146,7 @@ WHERE quantitat_trasllat > 100
 /* Ej9 - Mostra els codi de residus que tenen data d'enviament durant l'any actual.  */
 
 SELECT cod_residu FROM trasllat
-WHERE to_char(data_enviament, 'YYYY') = '2022';
+WHERE to_char(data_enviament, 'YYYY') = to_char(current_date, 'YYYY');
 
 /* Ej10 - Mostra el nombre de dies que han passat entre l'última data d'enviament d'un trasllat i la data actual.  */
 
@@ -136,6 +154,8 @@ SELECT (current_date::date - max(data_enviament)::date) AS days FROM trasllat;
 
 /* Ej11 - Mostra el nombre d'enviaments que han sigut realitzats (enviats) després del 20 de cada mes */
 
+SELECT data_enviament AS "Nombre d'enviaments" FROM trasllat
+WHERE to_char(data_enviament, 'DD:MM:YYYY') > '20:MM:YYYY';
 
 /* Ej12 - Mostra el codi de residu i la quantitat, d'aquells residus que han sigut enviats durant el mes de abril.  */
 
@@ -171,4 +191,3 @@ SELECT to_char(t.data_enviament, 'id') as "Numero de la semana", r.quantitat_res
 WHERE to_char(t.data_enviament, 'D') = '3'
   AND r.quantitat_residu > 100
 ORDER BY r.quantitat_residu DESC;
-
