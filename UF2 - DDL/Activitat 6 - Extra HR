@@ -1,0 +1,27 @@
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------ ACTIVITAT 6 - CONSULTES AVANZADES EXTRA HR - RESIDUS ------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/* Ej1 - Calcula quant guanyen en total tots els empleats */
+
+SELECT sum(salary) FROM employees;
+
+/* Ej2 - Calcula quant guanyen en total cadascun dels grups d'empleats classificats per tipus de treball (job_id) */
+
+SELECT sum(salary) as salary, job_id FROM employees
+GROUP BY job_id;
+
+/* Ej3 - Calcula el màxim salari per cadascun dels grups d'empleats classificats per tipus de treball (Job_id) */
+
+SELECT max(salary) as salary, job_id FROM employees
+GROUP BY job_id;
+
+/* Ej4 - Calcula el sou mitjà dels empleats de cada departament i després el sou mitjà dels empleats per tipus de treball. */
+
+
+
+/* Ej5 - Calcula quants empleats hi ha en  cada departament. */
+/* Ej6 - Calcula quants empleats hi ha de cada tipus d'ocupació. */
+/* Ej7 - Selecciona quant guanyen en total tots els empleats que són Stock Manager (job_id= ST_MAN).  */
+/* Ej8 - Visualitza l'identificador de continent i el número de països en la taula countries que té cada continent (region_id) */
+/* Ej9 - Visualitza els noms dels continents amb més de sis països en la taula countries */
