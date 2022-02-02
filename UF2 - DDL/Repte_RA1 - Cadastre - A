@@ -1,1 +1,25 @@
+/* Ej1 - Volem saber el DNI, nom i cognoms del responsable de família que té més persones al seu càrrec, dels pisos entre 60 i
+   100 m2, ubicats a la zona de GRAN CAPITÁN. La informació s’ha de mostrar: DNI, nom, cognoms, zona, Total_persones. (2 punts) */
 
+/* Ej2 - Em pots indicar quina és la planta d’un pis, de qualsevol zona que té més persones vivint? La informació que has de
+   mostrar és pis, carrer, zona,quantitat_persones.  (2 punts)  */
+
+/* Ej3 - Mostra la quantitat de persones que habiten en cases i en pisos per zona. La informació que s’ha de mostrar és: (2 punts)
+    ________________________________________________________
+   |Quantitat_habitats|  Tipus_vivenda   |       Zona       |
+   |__________________|__________________|__________________|
+   |         X        |       Casa       |      Realejo     |
+   |__________________|__________________|__________________|
+   |         Y        |       Pis        |      Realejo     |
+   |__________________|__________________|__________________|    */
+
+/* Ej4 - Quina és la zona més poblada i la menys poblada? Indica la resposta amb dues columnes que mostrin zona_mes_poblada
+   i zona_menys_poblada. (1 punts) */
+
+
+/* Ej5 - A quin codi postal està ubicat el pis que té menys habitants amb el pis amb més metres? Mostra la informació de la
+   següent manera: Quantitat_persones; zona; CP; carrer; nombre; metres (1 punt) */
+
+
+/* Ej6 - Quines són les tres zones urbanes que tenen més habitants vivint a la primera planta, de qualsevol escala, amb 
+   menys metres. La informació que has de mostrar és: Zona, quantitat_persones, planta, carrer, nombre, metres. (2 punts) */
