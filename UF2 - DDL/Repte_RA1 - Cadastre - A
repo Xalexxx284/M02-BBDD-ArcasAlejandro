@@ -1,8 +1,22 @@
 /* Ej1 - Volem saber el DNI, nom i cognoms del responsable de família que té més persones al seu càrrec, dels pisos entre 60 i
    100 m2, ubicats a la zona de GRAN CAPITÁN. La informació s’ha de mostrar: DNI, nom, cognoms, zona, Total_persones. (2 punts) */
 
+SELECT DISTINCT pr.dni AS "DNI", pr.nom_persona AS nom, pr.cognoms_persona AS cognom, z.nom_zona AS zona,
+                count(*) AS "Total_persones"
+FROM persona pr, zonaurbana z, pis p
+WHERE dni_c is null
+  AND p.metres_p between 60 and 100
+  AND upper(z.nom_zona) = 'GRAN CAPITÁN'
+GROUP BY pr.dni, z.nom_zona
+HAVING count(*) IN (SELECT max(a) FROM (SELECT count(*) as a FROM persona pr, zonaurbana z, pis p
+WHERE dni_c is null
+  AND p.metres_p between 60 and 100
+  AND upper(z.nom_zona) = 'GRAN CAPITÁN'
+GROUP BY pr.dni, z.nom_zona) as b);
+
+
 /* Ej2 - Em pots indicar quina és la planta d’un pis, de qualsevol zona que té més persones vivint? La informació que has de
-   mostrar és pis, carrer, zona,quantitat_persones.  (2 punts)  */
+   mostrar és pis, carrer, zona,quantitat_persones. (2 punts)  */
 
 /* Ej3 - Mostra la quantitat de persones que habiten en cases i en pisos per zona. La informació que s’ha de mostrar és: (2 punts)
     ________________________________________________________
@@ -13,13 +27,25 @@
    |         Y        |       Pis        |      Realejo     |
    |__________________|__________________|__________________|    */
 
+SELECT count(pr.dni) AS "Quantitat_habitants", v.tipus_vivenda AS "Tipus_vivenda", v.nom_zona AS "Zona" 
+FROM vivenda v, persona pr
+WHERE 
+GROUP BY v.tipus_vivenda, v.nom_zona
+
 /* Ej4 - Quina és la zona més poblada i la menys poblada? Indica la resposta amb dues columnes que mostrin zona_mes_poblada
    i zona_menys_poblada. (1 punts) */
+
+SELECT count(nom_zona) AS "zona_mes_poblada", count(nom_zona) AS zona_menys_poblada
+FROM vivenda join zonaurbana z on z.nom_zona = vivenda.nom_zona
 
 
 /* Ej5 - A quin codi postal està ubicat el pis que té menys habitants amb el pis amb més metres? Mostra la informació de la
    següent manera: Quantitat_persones; zona; CP; carrer; nombre; metres (1 punt) */
 
+SELECT distinct count(p.dni), v.nom_zona, v.codi_postal, v.carrer, v.nombre, v.metres
+FROM vivenda v, persona p
+WHERE max(v.metres)
+GROUP BY v.nom_zona, v.nom_zona, v.codi_postal, v.carrer, v.nombre, v.metres
 
-/* Ej6 - Quines són les tres zones urbanes que tenen més habitants vivint a la primera planta, de qualsevol escala, amb 
+/* Ej6 - Quines són les tres zones urbanes que tenen més habitants vivint a la primera planta, de qualsevol escala, amb
    menys metres. La informació que has de mostrar és: Zona, quantitat_persones, planta, carrer, nombre, metres. (2 punts) */
