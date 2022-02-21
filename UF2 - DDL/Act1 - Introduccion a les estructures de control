@@ -142,3 +142,43 @@ begin
     end if;
     raise notice 'El resultat es: %', v_result;
 end;     $$ language plpgsql;
+
+/* 11. Preguntar a l’usuari la seva edat i donar el missatge corresponent, si:
+         Menor de 18 ? ets menor de edat!
+         = 18 ? casi ets major de edat!
+         >18 ?ja ets major de edat!
+         >40 ? ja ets més major …
+       Si és negatiu => error edat no pot ser negativa. */
+
+do $$
+declare
+    v_age numeric(2);
+begin
+v_age= :v_age;
+    if :v_age < 18 then
+        raise notice 'ets menor de edat!';
+elseif :v_age = 18 then
+        raise notice 'casi ets major de edat!';
+elseif :v_age between 19 and 40 then
+        raise notice 'ja ets major de edat!';
+elseif :v_age > 40 then
+        raise notice 'ja ets més major...';
+    end if;
+end;    $$ language plpgsql;
+
+/* 12. Realitzar un programa que demani un número i el programa ha de realitzar les següents operacions amb aquest número.
+       Les operacions han de ser independents i són:
+            sumar-li 4.
+            Restar-li 3.
+            Multiplicar-li 8.
+       S’ha de tenir en compte que per a programar aquest exercici:
+       utilitzar una constant i assignar-li el número introduït.
+       fer ús d’una variable per a cada operació
+       imprimir per pantalla els resultats corresponents a cada operació, posant el literal al davant de Suma, Resta i Multiplicació respectivament. */
+
+do $$
+declare
+begin
+    
+end;
+    $$ language plpgsql
