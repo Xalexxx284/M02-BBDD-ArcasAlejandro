@@ -142,3 +142,53 @@ begin
     end if;
     raise notice 'El resultat es: %', v_result;
 end;     $$ language plpgsql;
+
+/* 11. Preguntar a l’usuari la seva edat i donar el missatge corresponent, si:
+         Menor de 18 ? ets menor de edat!
+         = 18 ? casi ets major de edat!
+         >18 ?ja ets major de edat!
+         >40 ? ja ets més major …
+       Si és negatiu => error edat no pot ser negativa. */
+
+do $$
+declare
+    v_age numeric(2);
+begin
+v_age= :v_age;
+    if :v_age < 18 then
+        raise notice 'ets menor de edat!';
+elseif :v_age = 18 then
+        raise notice 'casi ets major de edat!';
+elseif :v_age between 19 and 40 then
+        raise notice 'ja ets major de edat!';
+elseif :v_age > 40 then
+        raise notice 'ja ets més major...';
+    end if;
+end;    $$ language plpgsql;
+
+/* 12. Realitzar un programa que demani un número i el programa ha de realitzar les següents operacions amb aquest número.
+       Les operacions han de ser independents i són:
+            sumar-li 4.
+            Restar-li 3.
+            Multiplicar-li 8.
+       S’ha de tenir en compte que per a programar aquest exercici:
+       utilitzar una constant i assignar-li el número introduït.
+       fer ús d’una variable per a cada operació
+       imprimir per pantalla els resultats corresponents a cada operació, posant el literal al davant de Suma, Resta i Multiplicació respectivament. */
+
+do $$
+declare
+    val_num constant numeric(10,2):= :v_num;
+    val_suma numeric(10,2):= val_num + 4;
+    val_resta numeric(10,2):= val_num - 3;
+    val_mult numeric(10,2):= val_num * 8;
+begin
+    raise notice 'El num % + 4 es: %', val_num, val_suma;
+    raise notice 'El num % - 3 es: %', val_num, val_resta;
+    raise notice 'El num % * 8 es: %', val_num, val_mult;
+end;    $$ language plpgsql;
+
+/* 13. Realitzar un programa que introduirem un valor de dos números. Aquest dos números se li assigna dos variables
+   (en el moment de la declaració). Els dos números han de ser positius, en cas contrari s’ha de donar a l’usuari el
+   missatge corresponent. S’ha de realitzar una operació amb aquest números: dividir entre ells i sumar-li el segon.*/
+
