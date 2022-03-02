@@ -9,42 +9,42 @@ Aquest procediment el cridarem des de una consola. */
 
 
 -- Ej2 -----------------------------------------------------------------------------------------------------------------
-Crea un procediment emmagatzemat esmentat  emp_prod_max que mostri l’empresa productora que genera més residus tòxics.
+/* Crea un procediment emmagatzemat esmentat  emp_prod_max que mostri l’empresa productora que genera més residus tòxics.
 Aquest procediment haurà de mostrar un missatge indicant “L’empresa productura que més residus genera és nif_empresa, 
 nom_empresa, la toxicitat d’aquest productes és toxicitati la quantitat quantitat_total’ 
-Aquest procediment el cridarem des de una consola.
+Aquest procediment el cridarem des de una consola. */
 -- ---------------------------------------------------------------------------------------------------------------------
 
 
 
 -- Ej3 -----------------------------------------------------------------------------------------------------------------
-Crea una funció esmentada emp_transportistat que donat un període de temps ens indiqui quina ha sigut l’empresa 
+/* Crea una funció esmentada emp_transportistat que donat un període de temps ens indiqui quina ha sigut l’empresa 
 transportista que més Km ha recorregut durant aquest període. Aquesta funció és cridarà des de un procediment emmagatzemat,
 esmentat printar_emp_transportista que haurà de mostrar un missatge indicant “L’empresa amb CIF cif_emp_transportista i 
 amb nom nom_emp_transportista, ha recorregut quantitat_kms de kms durant el període periode”
-Aquest procediment el cridarem des de una consola.
+Aquest procediment el cridarem des de una consola. */
 -- ---------------------------------------------------------------------------------------------------------------------
 
 
 
 -- Ej4 -----------------------------------------------------------------------------------------------------------------
-Crea una funció esmentada tract_residu  que donat un tipus de tractament ens indicarà el destí, la ciutat de destí, el
+/* Crea una funció esmentada tract_residu  que donat un tipus de tractament ens indicarà el destí, la ciutat de destí, el
 nom de l’empresa productora i el tipus d’envàs que han fet servir les empreses productores que han traslladat la màxima
 quantitat de residus fent servir aquest tipus de tractament. Aquesta funció és cridarà des de un procediment emmagatzemat,
 esmentat printar_tract_residu que haurà de mostrar un missatge indicant “L’empresa amb CIF cif_emp_productora i amb 
 nom nom_emp_productora, ha traslladat al destí nom_desti ubicat en ciutat_desti en l’envàs tipus_envàs, el residu amb
 tractament tipus_residu”
-Aquest procediment el cridarem des de una consola.
+Aquest procediment el cridarem des de una consola. */
 -- ---------------------------------------------------------------------------------------------------------------------
 
 
 
 -- Ej5 -----------------------------------------------------------------------------------------------------------------
-Crea un procediment esmentat quantitat_residus que li passaràs un codi de destí i un any (sencer, per exemple 2016) i ens
+/* Crea un procediment esmentat quantitat_residus que li passaràs un codi de destí i un any (sencer, per exemple 2016) i ens
 retornarà la quantitat  de residus que s'han traslladat a aquell destí durant aquell any. Per fer aquest exercici et 
 proposo realitzar una funció (per calcular l'any) i  un procediment anomenat printar_q_residus  que mostrarà el següent
 missatge “La quantitat de residus que s’ha traslladat durant l’any any_introduit és quantitat_residu i el destí ciutat_destí”
-Aquest procediment el cridarem des de una consola.
+Aquest procediment el cridarem des de una consola. */
 -- ---------------------------------------------------------------------------------------------------------------------
 
 
