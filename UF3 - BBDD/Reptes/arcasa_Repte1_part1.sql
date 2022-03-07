@@ -25,7 +25,24 @@ amb nom nom_emp_transportista, ha recorregut quantitat_kms de kms durant el per�
 Aquest procediment el cridarem des de una consola. */
 -- ---------------------------------------------------------------------------------------------------------------------
 
+create or replace function emp_transportistat(fDate trasllat_empresatransport.data_enviament%type, sDate trasllat_empresatransport.data_enviament%type)
+returns trasllat_empresatransport.kms%type as $$
+declare
 
+begin
+    select t.data_enviament, t.data_enviament
+    into v_fDate, v_sDate from trasllat t
+    join trasllat_empresatransport te on t.nif_empresa = te.nif_empresa and t.cod_residu = te.cod_residu
+                                             and t.data_enviament = te.data_enviament and t.cod_desti = te.cod_desti;
+    raise notice 'fecha 1 % fecha 2 %', v_fDate, v_sDate;
+end; $$ language plpgsql;
+
+drop function emp_transportistat(fDate date, sDate date);
+
+create or replace procedure printar_emp_transportista() language plpgsql as $$
+declare
+begin
+end; $$;
 
 -- Ej4 -----------------------------------------------------------------------------------------------------------------
 /* Crea una funció esmentada tract_residu  que donat un tipus de tractament ens indicarà el destí, la ciutat de destí, el
