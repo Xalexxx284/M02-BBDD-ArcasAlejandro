@@ -67,7 +67,7 @@ do $$
 declare
     dades employees%rowtype = (select insertaremp_tran());
 begin
-    
+
 end; $$ language plpgsql;
 
 -- Ej3 -----------------------------------------------------------------------------------------------------------------
@@ -82,7 +82,43 @@ d) S’ha de gestionar la transacció, desant o desfent els canvis.
 e) Programar un script per a comprovar que funciona el procediment.*/
 -- ---------------------------------------------------------------------------------------------------------------------
 
+create or replace function modifremp_tran(deptId departments.department_id%type, v_import numeric, v_percentatge numeric) returns numeric as $$
+declare
+    deptId departments.department_id%type;
+    v_salary employees.salary%type;
+    v_import numeric;
+    v_percentatge numeric;
+begin
+    if v_import < 0 or v_percentatge < 0 then
+        raise notice 'Error el import i el percentatge ha de ser major que 1';
+        return false;
+    else
+        if (v_salary+(v_percentatge/100)*v_salary) = v_salary + v_import then
+            v_salary = v_salary + v_import;
+            return true;
+        elseif (v_salary+(v_percentatge/100)*v_salary) > v_salary + v_import then
+            v_salary = (v_salary+(v_percentatge/100)*v_salary);
+            return true;
+        else
+            v_salary = v_salary + v_import;
+            return true;
+        end if;
+    end if;
+end; $$ language plpgsql;
 
+drop function modifremp_tran(deptId departments.department_id%type, v_import numeric, v_percentatge numeric)
+
+do $$
+declare
+    v_validate boolean := (select modifremp_tran(:deptId, :v_import, :v_percentatge));
+begin
+    if v_validate = true then
+        COMMIT;
+    else
+        raise notice 'Problema amb la insersio de dades!';
+        ROLLBACK;
+    end if;
+end; $$ language plpgsql;
 
 -- Ej4 -----------------------------------------------------------------------------------------------------------------
 /* Programar un procediment anomenat borraremp_tran que esborri un empleat on el codi de l’empleat se li passarà com a
