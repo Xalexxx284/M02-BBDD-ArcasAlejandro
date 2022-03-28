@@ -10,7 +10,43 @@ d’aquest transport. Per fer aquest procediment has de tenir en compte:
      un cost d en tipus_transport, en el periode comprés entre e i f”. */
 -- ---------------------------------------------------------------------------------------------------------------------
 
+create or replace function comprovarData(fDate trasllat.data_enviament%type, sDate trasllat.data_enviament%type)
+                           returns boolean language plpgsql as $$
+begin
+    if fDate > sDate then
+        return true;
+    else
+        return false;
+    end if;
+end; $$;
 
+create or replace procedure tipusTransportInDate(tipusTransport trasllat_empresatransport.tipus_transport%type,
+                                                 fDate trasllat.data_enviament%type,
+                                                 sDate trasllat.data_enviament%type) language plpgsql as $$
+declare
+    comprovarData boolean := (select comprovarData(fDate, sDate));
+    tipusTransport trasllat_empresatransport.tipus_transport%type;
+    fDate date;
+    sDate date;
+begin
+    if comprovarData = false then
+           select ep.nom_emptransport, ep.nif_emptransportista, te.kms, te.cost, tipusTransport from empresatransportista ep,
+                       trasllat_empresatransport te where data_enviament between fDate and sDate
+                                                      and tipus_transport = tipusTransport;
+    else
+        raise notice 'ERROR: La data d"inici % es major que la data de fi %', fDate, sDate;
+    end if;
+    exception
+        when no_data_found then
+            raise exception 'Alguna dada no existeix';
+end; $$;
+
+do language plpgsql $$
+declare
+    
+begin
+    
+end; $$;
 
 -- Ej2 -----------------------------------------------------------------------------------------------------------------
 /* Crea un procediment emmagatzemat que li passaràs el codi de residu i un període de temps i et retornarà els diferents
