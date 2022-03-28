@@ -23,7 +23,12 @@ end; $$;
 create or replace function comprovarTran(tipusTransport trasllat_empresatransport.tipus_transport%type)
                            returns boolean language plpgsql as $$
 begin
-    select tipus_transport into strict tipusTransport from trasllat_empresatransport where
+    select tipus_transport into strict tipusTransport from trasllat_empresatransport
+    where lower(tipus_transport) = ($1) limit 1;
+    return false;
+    exception
+        when no_data_found then
+            return true;
 end; $$;
 
 create or replace procedure tipusTransportInDate(tipusTransport trasllat_empresatransport.tipus_transport%type,
