@@ -20,33 +20,41 @@ begin
     end if;
 end; $$;
 
+create or replace function comprovarTran(tipusTransport trasllat_empresatransport.tipus_transport%type)
+                           returns boolean language plpgsql as $$
+begin
+    select tipus_transport into strict tipusTransport from trasllat_empresatransport where
+end; $$;
+
 create or replace procedure tipusTransportInDate(tipusTransport trasllat_empresatransport.tipus_transport%type,
                                                  fDate trasllat.data_enviament%type,
                                                  sDate trasllat.data_enviament%type) language plpgsql as $$
 declare
     comprovarData boolean := (select comprovarData(fDate, sDate));
-    tipusTransport trasllat_empresatransport.tipus_transport%type;
-    fDate date;
-    sDate date;
+    comprovarTran boolean := (select comprovarTran(tipusTransport));
+    cursor1 cursor for select nom_emptransport, te.nif_emptransportista, kms, cost, tipusTransport from trasllat_empresatransport te
+        join empresatransportista e on te.nif_emptransportista = e.nif_emptransportista
+        where data_enviament between fDate and sDate
+          and tipus_transport = tipusTransport;
 begin
-    if comprovarData = false then
-           select ep.nom_emptransport, ep.nif_emptransportista, te.kms, te.cost, tipusTransport from empresatransportista ep,
-                       trasllat_empresatransport te where data_enviament between fDate and sDate
-                                                      and tipus_transport = tipusTransport;
+    if comprovarData = true then
+        raise exception 'ERROR: La data d"inici % es major que la data de fi %', fDate, sDate;
+    else if comprovarTran = true then
+        raise exception 'ERROR: El tipus de tranport: %, no existeix', tipusTransport;
     else
-        raise notice 'ERROR: La data d"inici % es major que la data de fi %', fDate, sDate;
+        for tipTran in cursor1
+        loop
+            raise notice 'L’empresa %, amb CIF %, ha realitzat % Kms amb un cost % en %, en el periode comprés entre % i %',
+                tipTran.nom_emptransport, tipTran.nif_emptransportista, tipTran.kms, tipTran.cost, tipusTransport, fDate, sDate;
+        end loop;
+    end if;
     end if;
     exception
         when no_data_found then
             raise exception 'Alguna dada no existeix';
 end; $$;
 
-do language plpgsql $$
-declare
-    
-begin
-    
-end; $$;
+call tipusTransportInDate(:tipusTransport, :fDate, :sDate);
 
 -- Ej2 -----------------------------------------------------------------------------------------------------------------
 /* Crea un procediment emmagatzemat que li passaràs el codi de residu i un període de temps i et retornarà els diferents
