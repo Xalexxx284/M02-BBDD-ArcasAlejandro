@@ -8,13 +8,29 @@ SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE
 create or replace function triggerExercise1() returns trigger language plpgsql as $$
 declare
 begin
-
+    if NEW.department_name is null then
+        raise exception 'Has de ficar un valor en "department_name", ja que no pot ser null';
+    end if;
 end; $$;
 
 create trigger nom_departament_notnull before insert
-    on emp_salari_nou for each row
+    on departments for each row
     execute procedure triggerExercise1();
 
+-- Comprovacions:
+
+insert into departments (department_id, manager_id, location_id)
+            values (200, 2, 2);
+
+-- Vista:
+
+select * from departments where department_id = 200;
+delete from departments where department_id = 200;
+
+-- Aixo ho he fet per saber si podia comprovar, que la columna "department_name" podia ser null o no, per aixi, fer un
+-- condicional de "null o not null" per comprovar si s'habia ficat un parametre en la insersio de valors. Pero no :)
+
+select column_name, data_type, is_nullable from information_schema.columns where table_name = 'departments';
 
 -- Ej2 -----------------------------------------------------------------------------------------------------------------
 /* Programar un trigger associat a la taula Employees. El trigger s’anomenarà restriccions_emp i ha de controlar les
@@ -92,7 +108,41 @@ delete from emp_salari_nou where employee_id = 150;
 suposi una pujada de sou superior al 10%. El disparador s’anomenarà errada_modificacio. */
 -- ---------------------------------------------------------------------------------------------------------------------
 
+create or replace function triggerExercise4() returns trigger language plpgsql as $$
+declare
+begin
+    if NEW.first_name != OLD.first_name then
+        raise exception 'La columna "first_name" no es pot modificar';
+    else if NEW.employee_id != OLD.employee_id then
+        raise exception 'La columna "employee_id" no es pot modificar';
+    else if NEW.salary > OLD.salary*1.10 then
+        raise exception  'La columna "salary" no es pot ser superior al increment del 10 percent del salari antic';
+    end if;
+    end if;
+    end if;
+    return new;
+end; $$;
 
+create trigger errada_modificacio before update
+    on emp_salari_nou for each row
+    execute procedure triggerExercise4();
+
+-- Comprovacions: First_Name
+
+update emp_salari_nou set first_name = 'Hola' where employee_id = 100;
+
+-- Comprovacions: Employee_Id
+
+update emp_salari_nou set employee_id = 210 where employee_id = 100;
+
+-- Comprovacions: Salary
+
+update emp_salari_nou set salary = 32000 where employee_id = 100;
+
+-- Vista:
+
+select * from emp_salari_nou where employee_id = 100;
+delete from emp_salari_nou where employee_id = 100;
 
 -- Ej5 -----------------------------------------------------------------------------------------------------------------
 /* Programar un trigger anomenat auditartaulaemp i que permeti auditar les operacions d’inserció o d’esborrat dades que
