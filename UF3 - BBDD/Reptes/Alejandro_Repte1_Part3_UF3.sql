@@ -22,7 +22,7 @@ create trigger updateQuantitat before update
     on residu for each row
     execute procedure triggerExercise1();
 
--- Ordres per comprovar el funcionament:
+------------------------------------ ORDRES PER COMPROVAR EL FUNCIONAMENT ----------------------------------------------
 
 -- Quantitat mes gran:
 update residu set quantitat_residu = 27 where nif_empresa = 'A-12000035';
