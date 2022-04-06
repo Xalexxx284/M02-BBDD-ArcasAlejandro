@@ -9,11 +9,9 @@
 
 create or replace function triggerExercise1() returns trigger language plpgsql as $$
 declare
-    quantitat_nova numeric := NEW.quantitat_residu;
-    quantitat_actual numeric := OLD.quantitat_residu;
 begin
-    if quantitat_nova < quantitat_actual then
-        raise exception 'La quantitat nova % no pot ser més petita que la quantitat actual %', quantitat_nova, quantitat_actual;
+    if NEW.quantitat_residu < OLD.quantitat_residu then
+        raise exception 'La quantitat nova % no pot ser més petita que la quantitat actual %', NEW.quantitat_residu, OLD.quantitat_residu;
     end if;
     return new;
 end; $$;
@@ -59,12 +57,10 @@ CREATE TABLE canvis (
 
 create or replace function update_dades() returns trigger language plpgsql as $$
 declare
-    toxicitat_nova numeric := NEW.toxicitat;
-    toxicitat_actual numeric := OLD.toxicitat;
 begin
-    if toxicitat_nova < toxicitat_actual then
+    if NEW.toxicitat < OLD.toxicitat then
         raise exception 'La quantitat de toxicitat nova % no pot ser més petita que la quantitat de toxicitat actual %',
-            toxicitat_nova, toxicitat_actual;
+            NEW.toxicitat, OLD.toxicitat;
     end if;
     return new;
 end; $$;
@@ -143,5 +139,4 @@ delete from residu where nif_empresa = 'A-12100022';
 
 select * from residu where nif_empresa = 'A-12100022';
 select * from canvis;
-
 
