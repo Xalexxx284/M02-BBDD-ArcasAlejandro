@@ -45,9 +45,9 @@ declare
 begin
     if NEW.salary < 0 then
       raise exception 'El salari no pot ser negatiu';
-    else if NEW.salary <= OLD.salary then
+    elsif NEW.salary <= OLD.salary then
       raise exception 'El salari nou no pot ser mes petit que l"antic';
-    else if OLD.commission_pct is null then
+    elsif OLD.commission_pct is null then
       raise exception 'L'empleat no te comissio, per aquest motiu no se li pot incrementar el salari';
     end if;
     return new;
