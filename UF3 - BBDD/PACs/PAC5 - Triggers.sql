@@ -1,3 +1,4 @@
+
 -- Ej1 -----------------------------------------------------------------------------------------------------------------
 /* Programar un trigger esmentat nom_departament_notnull que s’activarà quan no s’especifiqui el nom del departament al
 donar d’alta un departament nou a la taula departments. */
@@ -45,37 +46,32 @@ declare
 begin
     if NEW.salary < 0 then
       raise exception 'El salari no pot ser negatiu';
-    elsif NEW.salary <= OLD.salary then
+    else if NEW.salary <= OLD.salary then
       raise exception 'El salari nou no pot ser mes petit que l"antic';
-    elsif OLD.commission_pct is null then
-      raise exception 'L'empleat no te comissio, per aquest motiu no se li pot incrementar el salari';
+    else if OLD.commission_pct is null then
+      raise exception 'Lempleat no te comissio, per aquest motiu no se li pot incrementar el salari';
+    end if;
+    end if;
     end if;
     return new;
 end; $$;
 
 create trigger restriccions_emp before insert or update
+
    on emp_salari_nou for each row
    execute procedure triggerExercise2();
-
 -- Comprovacio a): Inserir dades
-
 insert into emp_salari_nou (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
-            values (150, 'Nombre1', 'Apellido2', 'NombreApellido@gmail.com', '665835923', '27/03/2003', 210, 1500, 0.5, 2, 80);
-
+            values (150, 'Nombre1', 'Apellido2', 'NombreApellido@gmail.com', '665835923', '27/03/2003', 210, 100, 9.0, 2, 80);
 -- Comprovacio b): Actualitzar dades
-
-update emp_salari_nou set salary = 1400 where employee_id = 150;
-
+update emp_salari_nou set salary = 1300 where employee_id = 150;
 -- Vista:
-
 select * from emp_salari_nou where employee_id = 150;
 delete from emp_salari_nou where employee_id = 150;
-
 -- Ej3 -----------------------------------------------------------------------------------------------------------------
 /* Programar un trigger que comprovi que la comissió mai sigui més gran que el salari a l’hora d’inserir un empleat. El
 disparador s’anomenarà comissio i s’ha de comprovar que funciona fent una inserció. */
 -- ---------------------------------------------------------------------------------------------------------------------
-
 create or replace function triggerExercise3() returns trigger language plpgsql as $$
 declare
 begin
@@ -84,31 +80,22 @@ begin
     end if;
     return new;
 end; $$;
-
 create trigger comissio before insert
     on emp_salari_nou for each row
     execute procedure triggerExercise3();
-
 -- Comprovacio: Amb la comissio mes gran que el salari - (FUNCIONA!!!!!!!!!!)
-
 insert into emp_salari_nou (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
             values (150, 'Nombre1', 'Apellido2', 'NombreApellido@gmail.com', '665835923', '27/03/2003', 210, 1500, 0.5, 2, 80);
-
 -- Comprovacio: Amb la comissio mes petita que el salari - (NO FUNCIONA!!!!!)
-
 insert into emp_salari_nou (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
             values (150, 'Nombre1', 'Apellido2', 'NombreApellido@gmail.com', '665835923', '27/03/2003', 210, 0.2, 0.5, 2, 80);
-
 -- Vista:
-
 select * from emp_salari_nou where employee_id = 150;
 delete from emp_salari_nou where employee_id = 150;
-
 -- Ej4 -----------------------------------------------------------------------------------------------------------------
 /* Programar un trigger que faci fallar qualsevol operació de modificació del first_name o del codi de l’empleat o que
 suposi una pujada de sou superior al 10%. El disparador s’anomenarà errada_modificacio. */
 -- ---------------------------------------------------------------------------------------------------------------------
-
 create or replace function triggerExercise4() returns trigger language plpgsql as $$
 declare
 begin
@@ -123,25 +110,16 @@ begin
     end if;
     return new;
 end; $$;
-
 create trigger errada_modificacio before update
     on emp_salari_nou for each row
     execute procedure triggerExercise4();
-
 -- Comprovacions: First_Name
-
 update emp_salari_nou set first_name = 'Hola' where employee_id = 100;
-
 -- Comprovacions: Employee_Id
-
 update emp_salari_nou set employee_id = 210 where employee_id = 100;
-
 -- Comprovacions: Salary
-
 update emp_salari_nou set salary = 32000 where employee_id = 100;
-
 -- Vista:
-
 select * from emp_salari_nou where employee_id = 100;
 delete from emp_salari_nou where employee_id = 100;
 
@@ -154,4 +132,21 @@ b) Quan es produeixi qualsevol operació (inserció, esborrat i/o actualitzar) s
    fila en la taula resauditaremp. El contingut d’aquesta fila serà la data i hora que s’ha fet l’operació sobre la taula
    i el codi i cognom de l’empleat. */
 -- ---------------------------------------------------------------------------------------------------------------------
+
+create table resauditaremp (
+    resultat varchar(200)
+);
+
+create or replace function auditartaulaemp() returns trigger language plpgsql as $$
+declare
+begin
+    insert into resauditaremp (resultat) values (concat(tg_name,'-', tg_when,'-', tg_level,'-', tg_op,'-', now()));
+    return null;
+end; $$;
+
+
+create trigger before_auditartaulaemp before insert
+    on emp_salari_nou for each row
+    execute procedure auditartaulaemp();
+
 
